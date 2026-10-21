@@ -1,6 +1,6 @@
 # CGA | Transformación de Infraestructura Tecnológica
 
-Mi propuesta de transformación de la infraestructura tecnológica de la CGA, presentada como un gemelo digital editable. React, TypeScript, Vite, Tailwind CSS, React Flow, Motion, Recharts y Lucide. Estática, sin base de datos ni acceso a servidores reales.
+Propuesta para fortalecer la infraestructura tecnológica de la CGA desde la Dirección de Sistemas. Aporto una ruta técnica para priorizar, junto con la dirección y el equipo, la modernización y la continuidad institucional. React, TypeScript, Vite, Tailwind CSS, React Flow, Motion, Recharts y Lucide. Estática, sin base de datos ni acceso a servidores reales.
 
 ## Uso para el administrador funcional
 
@@ -17,15 +17,15 @@ Abra la aplicación publicada por GitHub Pages desde la sección **Deployments**
 
 Los borradores y versiones se conservan en el almacenamiento del navegador que utiliza. Borrar datos del navegador o cambiar de dispositivo puede perderlos. La exportación JSON es opcional. Un cambio en la aplicación **no modifica GitHub** ni se comparte automáticamente con otros visitantes. No se necesita una carpeta de proyecto ni instalar herramientas en el equipo del administrador.
 
-Para los cambios permanentes de mi propuesta, mantendré el código en este repositorio y comprobaré las validaciones de GitHub Actions antes de publicar.
+Los cambios permanentes se conservan en este repositorio y se validan antes de publicar. La propuesta mantiene mi aporte técnico y una perspectiva institucional para la Dirección de Sistemas y la CGA.
 
 ## Datos y límites
 
-La vista incluye las VLAN que he definido para la CGA: 20 Servidores; 13 Acceso Contraloría, entregado desde los switches de la Gobernación; 21 Red inalámbrica; 23 Cámaras; 200 Telefonía; 1 Gestión. El resto de las relaciones de arquitectura requiere validación. Mantengo fuera del sitio las IP de producción, las credenciales, las reglas del firewall y la información personal.
+La vista incluye las VLAN de referencia de la CGA: 20 Servidores; 13 Acceso Contraloría, entregado desde los switches de la Gobernación; 21 Red inalámbrica; 23 Cámaras; 200 Telefonía; 1 Gestión. El resto de las relaciones de arquitectura requiere validación. Mantenemos fuera del sitio las IP de producción, las credenciales, las reglas del firewall y la información personal.
 
 Los aproximadamente 30 registros VM son un escenario de capacidad; no constituyen inventario certificado. Los roles repetidos son ejemplos editables y no indican que existan cinco servicios reales de cada tipo.
 
-**Implementado** identifica los avances que ya implementé: identidad híbrida con Entra Connect Sync / hash de contraseñas y recuperación de conectividad iSCSI. Las simulaciones describen estos avances sin operar sobre la infraestructura. **Verificado** solo debe asignarse al registrar evidencia. El resto se clasifica como **Propuesto**, **Pendiente de validación** o **Simulación**.
+**Implementado** identifica los avances que implementamos desde la Dirección de Sistemas: identidad híbrida con Entra Connect Sync / hash de contraseñas y recuperación de conectividad iSCSI. Las simulaciones describen estos avances sin operar sobre la infraestructura. **Verificado** solo debe asignarse al registrar evidencia. El resto se clasifica como **Propuesto**, **Pendiente de validación** o **Simulación**.
 
 El R770 de referencia (2 × Xeon 6 6527P, 24 cores por CPU, 512 GB RAM, 25 GbE) es una propuesta. No se certifican CPU, HBA, NIC, firmware o BOM. Los hilos por núcleo son un supuesto editable. R660 y otros nombres no implican configuraciones compatibles.
 
@@ -55,7 +55,7 @@ Las dependencias se fijan mediante el package-lock.json generado en la primera e
 
 ## Versión corporativa futura
 
-El repositorio público contiene el escenario de planificación y las VLAN que autoricé incluir. Para incorporar información sensible adicional, utilizaré un repositorio y alojamiento internos autorizados; colocar el sitio tras autenticación corporativa de la plataforma (por ejemplo, un proxy con Entra ID) y controles de acceso, transporte y retención aprobados. No proteger datos sensibles mediante una pantalla de contraseña en JavaScript ni incluir secretos en variables VITE_.
+El repositorio público contiene el escenario de planificación y las VLAN incluidas en la propuesta. Para incorporar información sensible adicional, desde Sistemas utilizaremos un repositorio y alojamiento internos autorizados; colocar el sitio tras autenticación corporativa de la plataforma (por ejemplo, un proxy con Entra ID) y controles de acceso, transporte y retención aprobados. No proteger datos sensibles mediante una pantalla de contraseña en JavaScript ni incluir secretos en variables VITE_.
 
 Esta aplicación no implementa autenticación ni cifrado de borradores. El almacenamiento local no es una base de datos corporativa. Para colaboración persistente se deberá diseñar un servicio autorizado antes de incorporar datos reales.
 
