@@ -1,0 +1,65 @@
+name: Validar y publicar CGA
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cga-pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preparar código inicial en la nube
+        run: node setup.cjs
+      - name: Instalar dependencias
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: Probar reglas de dominio y privacidad
+        run: npm test
+      - name: Comprobar TypeScript y compilar producción
+        run: npm run build
+      - name: Conservar código inicial y dependencias fijadas
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src README.md index.html tsconfig.json vite.config.ts .gitignore package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Generar aplicación CGA y fijar dependencias desde GitHub Actions"
+            git push
+          fi
+      - name: Conservar compilación
+        uses: actions/upload-artifact@v4
+        with:
+          name: cga-dist
+          path: dist
+      - name: Preparar artefacto Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publicar aplicación
+        id: deployment
+        uses: actions/deploy-pages@v4
