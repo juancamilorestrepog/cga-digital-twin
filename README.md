@@ -81,3 +81,12 @@ Microsoft documenta el papel de aprobaciones y políticas de cliente; los plazos
 
 - src/wsus-domain.ts: reglas del simulador.
 - src/Zeus.tsx y src/zeus.css: módulo ZEUS.
+
+
+## Acceso de demostración para reuniones
+
+La aplicación inicia con usuario y contraseña de prueba. Cuentas iniciales: `jcrestrepo` y `root`; contraseña inicial de ambas: `CGA-Demo-360!`. Al entrar con `root` se exige cambiarla. Desde **Gestión de usuarios**, una cuenta administradora puede crear usuarios de prueba, asignar el rol de demostración, activar/desactivar otras cuentas y asignar contraseñas temporales. La propia cuenta y root no se desactivan desde la sesión; root puede restablecer la contraseña de jcrestrepo. Los usuarios nuevos cambian su contraseña al primer ingreso.
+
+**Es una simulación, no autenticación real:** las cuentas se guardan solo en `cga-demo-users-v1` de localStorage y la sesión en sessionStorage. Las contraseñas de prueba se derivan con sal y PBKDF2; esto no protege el sitio público ni convierte el control de roles del cliente en autorización de servidor. El código y los escenarios publicados continúan siendo públicos. No usar contraseñas reales. No hay correos ni sincronización de usuarios entre equipos.
+
+Desde **Datos de acceso de demostración → Restablecer acceso de demostración** se pueden restaurar las cuentas iniciales tras confirmación; se eliminan únicamente las cuentas demo y se conserva el escenario de infraestructura. Las versiones y exportaciones de infraestructura no incluyen estas cuentas. Para acceso real se requiere un servicio de autenticación y autorización en la nube.
