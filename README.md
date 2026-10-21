@@ -6,6 +6,7 @@ Propuesta para fortalecer la infraestructura tecnológica de la CGA desde la Dir
 
 Abra la aplicación publicada por GitHub Pages desde la sección **Deployments** del repositorio. No necesita instalar software.
 
+- **ZEUS / WSUS:** avance implementado y laboratorio explicativo de actualizaciones. Sincronice el catálogo ficticio, detecte necesidades, apruebe un grupo, abra su ventana y simule la distribución. Los reinicios solo avanzan para los equipos de ejemplo que los permiten. El reporte CSV está marcado como simulación.
 - **Inicio:** visión del escenario y arquitectura interactiva.
 - **Iniciar presentación:** 12 capítulos. Use las flechas del teclado; Esc cierra. Profundizar muestra detalle y permite abrir el módulo técnico. La pantalla completa depende del navegador.
 - **Diagrama:** arrastre equipos, use el zoom, cambie de vista, seleccione capas y pulse un equipo para editar su ficha. Al seleccionar se resaltan sus conexiones directas. Puede crear enlaces arrastrando entre los conectores de los nodos o desde Administración.
@@ -25,7 +26,7 @@ La vista incluye las VLAN de referencia de la CGA: 20 Servidores; 13 Acceso Cont
 
 Los aproximadamente 30 registros VM son un escenario de capacidad; no constituyen inventario certificado. Los roles repetidos son ejemplos editables y no indican que existan cinco servicios reales de cada tipo.
 
-**Implementado** identifica los avances que implementamos desde la Dirección de Sistemas: identidad híbrida con Entra Connect Sync / hash de contraseñas y recuperación de conectividad iSCSI. Las simulaciones describen estos avances sin operar sobre la infraestructura. **Verificado** solo debe asignarse al registrar evidencia. El resto se clasifica como **Propuesto**, **Pendiente de validación** o **Simulación**.
+**Implementado** identifica los avances que implementamos desde la Dirección de Sistemas: identidad híbrida con Entra Connect Sync / hash de contraseñas y recuperación de conectividad iSCSI, además de ZEUS / WSUS para gestionar las actualizaciones. Propuse e implementé ZEUS al identificar numerosos equipos desactualizados. Su host, SO, cobertura y políticas de producción quedan pendientes de inventario. Las simulaciones describen estos avances sin operar sobre la infraestructura. **Verificado** solo debe asignarse al registrar evidencia. El resto se clasifica como **Propuesto**, **Pendiente de validación** o **Simulación**.
 
 El R770 de referencia (2 × Xeon 6 6527P, 24 cores por CPU, 512 GB RAM, 25 GbE) es una propuesta. No se certifican CPU, HBA, NIC, firmware o BOM. Los hilos por núcleo son un supuesto editable. R660 y otros nombres no implican configuraciones compatibles.
 
@@ -69,3 +70,14 @@ Esta aplicación no implementa autenticación ni cifrado de borradores. El almac
 - .github/workflows/pages.yml: validación y publicación.
 
 Pruebas de dominio y compilación no sustituyen una aceptación funcional ni una auditoría de infraestructura.
+
+## ZEUS / WSUS: alcance del simulador
+
+El módulo utiliza 8 equipos y 3 paquetes ficticios. No consulta ZEUS ni cambia GPO, aprobaciones o equipos reales. La secuencia separa catálogo, detección, aprobación por grupo, ventana de mantenimiento, permiso de instalación, conectividad, aplicabilidad y reinicio autorizado. La aprobación no fuerza por sí sola el estado Actualizado. Cambiar de paquete inicia un ejercicio nuevo. La exportación CSV contiene resultados simulados.
+
+ZEUS figura como servicio lógico implementado en el diagrama y en los avances. No se asume que sea una VM ni se inventan recursos o ubicación física. Los escenarios guardados reciben esta referencia una sola vez, conservando sus ediciones.
+
+Microsoft documenta el papel de aprobaciones y políticas de cliente; los plazos límite y la configuración real pueden modificar el comportamiento. Las referencias oficiales se encuentran en el módulo. WSUS está en desuso según Microsoft, con capacidades actuales mantenidas; su evolución se evalúa como parte de la planificación.
+
+- src/wsus-domain.ts: reglas del simulador.
+- src/Zeus.tsx y src/zeus.css: módulo ZEUS.
