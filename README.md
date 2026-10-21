@@ -1,4 +1,4 @@
-# CGA | Transformación de Infraestructura Tecnológica
+# CGA / Hefesto Digital Twin 360
 
 Propuesta para fortalecer la infraestructura tecnológica de la CGA desde la Dirección de Sistemas. Aporto una ruta técnica para priorizar, junto con la dirección y el equipo, la modernización y la continuidad institucional. React, TypeScript, Vite, Tailwind CSS, React Flow, Motion, Recharts y Lucide. Estática, sin base de datos ni acceso a servidores reales.
 
@@ -45,7 +45,7 @@ Referencia oficial consultada el 21/10/2026: https://www.microsoft.com/licensing
 
 El flujo **Validar y publicar CGA** de GitHub Actions instala dependencias en un runner de GitHub, ejecuta las pruebas de dominio y privacidad, comprueba TypeScript, construye la versión optimizada y publica el artefacto mediante GitHub Pages.
 
-La primera ejecución genera los archivos desde setup.cjs y los guarda mediante un commit de github-actions[bot]. Las ejecuciones siguientes utilizan directamente src/ y no vuelven a generar ni sobrescriben el código. setup.cjs conserva el arranque inicial para trazabilidad y no tiene dependencias. Los cambios permanentes se hacen en src/.
+Las fuentes se mantienen directamente en src/. El archivo setup.cjs prepara en el runner de GitHub el logo institucional original de CGA.zip como public/CGA.png, sin alterar sus colores ni proporciones. Vite incorpora ese PNG a la publicación. No se extraen archivos ni se instala software en el equipo del administrador. Los cambios permanentes se hacen en src/.
 
 Si Pages aún no está habilitado: repositorio → **Settings → Pages → Build and deployment → Source → GitHub Actions**. Si la cuenta requiere autorizar GitHub Actions, habilítelo para este repositorio. No hay que introducir tokens en archivos ni compartir contraseñas.
 
