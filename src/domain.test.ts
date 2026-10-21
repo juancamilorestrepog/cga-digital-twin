@@ -8,3 +8,9 @@ test('combinación de paquetes y sobreoferta',()=>{assert.equal(licensing(2,24,2
 test('normalizar entradas no finitas y negativas',()=>{assert.equal(positive(NaN),1);assert.equal(positive(-5),1);assert.equal(nonnegative(-3),0);assert.equal(nonnegative(Infinity),0);});
 test('rechazar archivos sin esquema o listas válidas',()=>{assert.throws(()=>parseScenario('{}'));assert.throws(()=>parseScenario('null'));assert.throws(()=>parseScenario('{"version":2}'));assert.throws(()=>parseScenario('x'.repeat(2000001)));});
 test('los datos de demostración no contienen direcciones privadas ni credenciales',()=>{const data=readFileSync(new URL('./data.ts',import.meta.url),'utf8');assert.doesNotMatch(data,/\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);assert.doesNotMatch(data,/\b192\.168\.\d{1,3}\.\d{1,3}\b/);assert.doesNotMatch(data,/\b172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}\b/);assert.doesNotMatch(data,/(?:ghp_|github_pat_|-----BEGIN PRIVATE KEY)/);});
+
+import {baseScenario} from './data.ts';
+test('importar y exportar conserva el escenario completo',()=>assert.deepEqual(parseScenario(JSON.stringify(baseScenario)),baseScenario));
+test('rechazar conexiones a equipos inexistentes',()=>{const s=structuredClone(baseScenario);s.links[0].target='equipo-inexistente';assert.throws(()=>parseScenario(JSON.stringify(s)));});
+test('rechazar equipos duplicados y etapas vacías',()=>{const s=structuredClone(baseScenario);s.devices.push({...s.devices[0]});assert.throws(()=>parseScenario(JSON.stringify(s)));s.devices.pop();s.stages=[];assert.throws(()=>parseScenario(JSON.stringify(s)));});
+test('rechazar recursos nulos y estados desconocidos',()=>{const s=structuredClone(baseScenario);const v=JSON.parse(JSON.stringify(s));v.vms[0].ram=null;assert.throws(()=>parseScenario(JSON.stringify(v)));v.vms[0].ram=8;v.devices[0].status='Operativo sin evidencia';assert.throws(()=>parseScenario(JSON.stringify(v)));});
