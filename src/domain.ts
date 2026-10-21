@@ -6,7 +6,7 @@ export type VM={id:string;name:string;role:string;os:string;target:string;cpu:nu
 export type Config={manufacturer:string;model:string;processors:number;cpu:string;cores:number;threads:number;ram:number;disks:string;controllers:string;nic:string;speed:number;fc:string;iscsi:string;os:string;vmCount:number};
 export type License={pack16:number;pack2:number;sku:string;channel:string;calType:string;cals:number;users:number};
 export type Stage={id:string;name:string;description:string;status:Status};
-export type Scenario={version:1;name:string;devices:Device[];links:Link[];vms:VM[];config:Config;license:License;stages:Stage[];storage:{protocol:string;speed:string;port:string;switchId:string;compatible:boolean;mpio:boolean};mercurio:{java:string;tomcat:string;database:string;rollback:string;tests:string}};
+export type Scenario={version:1;referenceRevision?:number;name:string;devices:Device[];links:Link[];vms:VM[];config:Config;license:License;stages:Stage[];storage:{protocol:string;speed:string;port:string;switchId:string;compatible:boolean;mpio:boolean};mercurio:{java:string;tomcat:string;database:string;rollback:string;tests:string}};
 export function positive(value:unknown,fallback=1){const n=Number(value);return Number.isFinite(n)?Math.max(1,Math.min(100000,Math.floor(n))):fallback;}
 export function nonnegative(value:unknown){const n=Number(value);return Number.isFinite(n)?Math.max(0,Math.min(100000,Math.floor(n))):0;}
 export function licensing(processors:number,cores:number,pack16:number,pack2:number){const physical=positive(processors)*positive(cores);const required=Math.max(16,positive(processors)*Math.max(8,positive(cores)));const offered=nonnegative(pack16)*16+nonnegative(pack2)*2;const missing=Math.max(0,required-offered);const purchase=Math.ceil(missing/2)*2;return {physical,required,offered,missing,excess:Math.max(0,offered-required),pack16:Math.floor(purchase/16),pack2:(purchase%16)/2,covered:Math.min(required,offered)};}
@@ -14,6 +14,7 @@ const obj=(v:unknown):v is Record<string,unknown>=>typeof v==='object'&&v!==null
 export function parseScenario(text:string):Scenario{
  if(text.length>2000000)throw new Error('El archivo supera el límite de 2 MB.');
  const v:unknown=JSON.parse(text);if(!obj(v)||v.version!==1||!obj(v.config)||!obj(v.license)||!obj(v.storage)||!obj(v.mercurio)||typeof v.name!=='string')throw new Error('Formato de escenario no reconocido.');
+ if(v.referenceRevision!==undefined&&(typeof v.referenceRevision!=='number'||!Number.isFinite(v.referenceRevision)||v.referenceRevision<0||!Number.isInteger(v.referenceRevision)))throw new Error('Revisión de referencia inválida.');
  const arrays=['devices','links','vms','stages'] as const;for(const k of arrays)if(!Array.isArray(v[k])||(v[k] as unknown[]).length>500)throw new Error('Listas inválidas o demasiado extensas.');
  const strings=(row:unknown,keys:string[])=>{if(!obj(row)||keys.some(k=>typeof row[k]!=='string'||String(row[k]).length>10000))throw new Error('Campos de texto inválidos.');};
  const nums=(row:Record<string,unknown>,keys:string[],min=0)=>{if(keys.some(k=>typeof row[k]!=='number'||!Number.isFinite(row[k])||Number(row[k])<min||Number(row[k])>100000))throw new Error('Valores numéricos inválidos.');};
