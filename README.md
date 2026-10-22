@@ -90,3 +90,12 @@ La aplicación inicia con usuario y contraseña de prueba. Cuentas iniciales: `j
 **Es una simulación, no autenticación real:** las cuentas se guardan solo en `cga-demo-users-v1` de localStorage y la sesión en sessionStorage. Las contraseñas de prueba se derivan con sal y PBKDF2; esto no protege el sitio público ni convierte el control de roles del cliente en autorización de servidor. El código y los escenarios publicados continúan siendo públicos. No usar contraseñas reales. No hay correos ni sincronización de usuarios entre equipos.
 
 La pantalla de ingreso muestra únicamente el formulario; la gestión y el restablecimiento de contraseñas de prueba se realizan desde una sesión administradora. Las versiones y exportaciones de infraestructura no incluyen estas cuentas. Para acceso real se requiere un servicio de autenticación y autorización en la nube.
+
+
+### Compatibilidad del acceso de prueba
+
+La simulación usa PBKDF2-SHA256 con 120000 iteraciones. En HTTPS emplea Web Crypto; si no está disponible (por ejemplo en HTTP), usa una implementación JavaScript compatible de @noble/hashes, con el mismo resultado para las contraseñas ya guardadas. No se usa crypto.randomUUID para los identificadores, ya que requiere contexto seguro; se generan con getRandomValues. Esto no convierte el acceso estático en autenticación real ni sustituye HTTPS.
+
+Si localStorage está bloqueado, sin cuota o contiene cuentas inválidas, las cuentas iniciales se cargan en memoria. No se sobrescriben datos inválidos ni se cambia el escenario de infraestructura. La gestión de usuarios informa cuando los cambios son temporales. Si sessionStorage falla, el ingreso y el cierre siguen funcionando; será necesario volver a ingresar tras recargar.
+
+El dominio institucional requiere un registro DNS público correcto y un certificado válido antes de habilitar Enforce HTTPS en GitHub Pages.
