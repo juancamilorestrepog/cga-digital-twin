@@ -1,3 +1,4 @@
+import {demoRandomId} from './demo-auth-domain';
 import {useDemoAuth,DemoUsersPanel,DemoAccountActions} from './DemoAuth';
 import Zeus from './Zeus';
 import {useState,useEffect,useMemo,useCallback,type ReactNode} from 'react';
@@ -10,7 +11,7 @@ import {licensing,positive,nonnegative,parseScenario,resizeVMs,statuses,type Sce
 const icons:Record<string,typeof Server>={server:Server,switch:Network,shield:Shield,database:Database,cloud:Cloud,identity:Users,users:Monitor,app:AppWindow};
 const navIcons=[Layers,Network,CheckCircle2,Download,Server,SlidersHorizontal,FileKey,Database,Shield,Users,Cloud,AppWindow,Monitor,GitBranch,AlertTriangle,Presentation,Settings2];
 const clone=<T,>(x:T):T=>structuredClone(x);
-const uid=()=>crypto.randomUUID();
+const uid=()=>demoRandomId();
 const key='cga-twin-v1';
 const labels:Record<string,string>={zeus:'ZEUS / WSUS',updates:'Origen de actualizaciones',server:'Servidor',switch:'Switch',database:'Almacenamiento / base de datos',shield:'Seguridad',app:'Aplicación',identity:'Identidad',cloud:'Nube',users:'Usuarios',legacy:'Hosts heredados',target:'Host objetivo',core:'Core CGA',san:'Dell PowerConnect 5548',ibm:'IBM FlashSystem 5300',access:'Switch de acceso',sophos:'Firewall Sophos',ad:'Active Directory / DNS',mercurio:'Mercurio',sync:'Entra Connect Sync',entra:'Microsoft Entra ID',m365:'Microsoft 365',trend:'Trend IA',soc:'XDR / SOC','directa-por-validar':'Conexión directa · por validar'};
 function initial(){try{const raw=localStorage.getItem(key);return raw?refreshScenario(parseScenario(raw)):clone(baseScenario);}catch{return clone(baseScenario);}}
