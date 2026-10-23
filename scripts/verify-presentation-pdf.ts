@@ -1,0 +1,10 @@
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+import {createPresentationPdf} from '../src/presentation-pdf.ts';
+import {baseScenario} from '../src/data.ts';
+const out=process.env.PDF_REVIEW_DIR||'work/pdf-review';mkdirSync(out,{recursive:true});
+const logo=new Uint8Array(readFileSync('public/CGA.png'));
+const{doc,pages,layouts}=createPresentationPdf(baseScenario,logo,new Date('2026-10-23T12:00:00Z'));
+if(pages.length!==14||layouts.some(b=>b.y+b.height>=490))throw new Error('La composición del PDF excede los límites esperados.');
+writeFileSync(out+'/presentacion.pdf',new Uint8Array(doc.output('arraybuffer')));
+writeFileSync(out+'/index.html','<!doctype html><html lang="es"><meta charset="utf-8"><title>Revisión visual PDF Hefesto</title><style>body{margin:24px;background:#081421;color:white;font:16px Arial}a{color:#73dfcd}main{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}img{width:100%;border:1px solid #345}figure{margin:0}figcaption{padding:8px}</style><h1>Revisión visual de las 14 páginas</h1><p><a href="presentacion.pdf">Abrir PDF de referencia</a></p><main>'+pages.map((p,i)=>'<figure><a href="pagina-'+String(i+1).padStart(2,'0')+'.png"><img src="pagina-'+String(i+1).padStart(2,'0')+'.png" alt="Página '+(i+1)+'"></a><figcaption>'+(i+1)+'. '+p.label+'</figcaption></figure>').join('')+'</main></html>');
+console.log('PDF validado: '+pages.length+' páginas; '+layouts.length+' bloques de texto dentro de los márgenes.');
