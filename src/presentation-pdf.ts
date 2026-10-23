@@ -23,4 +23,4 @@ export function createPresentationPdf(s:Scenario,logo:Uint8Array,date=new Date()
  });
  return {doc,pages,layouts};
 }
-export async function downloadPresentationPdf(s:Scenario,logoUrl:string){const response=await fetch(logoUrl);if(!response.ok)throw new Error('No se pudo cargar el logo institucional. Recarga la página e intenta de nuevo.');const logo=new Uint8Array(await response.arrayBuffer());const{doc,pages}=createPresentationPdf(s,logo);await doc.save(PRESENTATION_PDF_FILENAME,{returnPromise:true});return pages.length;}
+export async function downloadPresentationPdf(s:Scenario,logoUrl:string){const response=await fetch(logoUrl);if(!response.ok)throw new Error('No se pudo cargar el logo institucional. Recarga la página e intenta de nuevo.');const logo=new Uint8Array(await response.arrayBuffer());const{doc,pages}=createPresentationPdf(s,logo);const url=URL.createObjectURL(doc.output('blob'));const link=document.createElement('a');link.href=url;link.download=PRESENTATION_PDF_FILENAME;document.body.appendChild(link);link.click();link.remove();return {pages:pages.length,url,filename:PRESENTATION_PDF_FILENAME};}
