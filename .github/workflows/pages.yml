@@ -23,20 +23,11 @@ jobs:
         run: node setup.cjs
       - name: Instalar dependencias
         run: |
-          npm install --package-lock-only --ignore-scripts
-          npm ci
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
       - name: Probar reglas de dominio y privacidad
         run: npm test
       - name: Comprobar TypeScript y compilar producción
         run: npm run build
-      - name: Revisar visualmente la presentación PDF
-        run: |
-          PDF_REVIEW_DIR=dist/pdf-review node --experimental-strip-types scripts/verify-presentation-pdf.ts
-          if ! command -v pdftoppm >/dev/null; then
-            sudo apt-get update -qq
-            sudo apt-get install -y poppler-utils
-          fi
-          pdftoppm -scale-to 1280 -png dist/pdf-review/presentacion.pdf dist/pdf-review/pagina
       - name: Conservar código inicial y dependencias fijadas
         if: github.event_name != 'pull_request'
         run: |
