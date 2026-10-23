@@ -99,3 +99,12 @@ La simulación usa PBKDF2-SHA256 con 120000 iteraciones. En HTTPS emplea Web Cry
 Si localStorage está bloqueado, sin cuota o contiene cuentas inválidas, las cuentas iniciales se cargan en memoria. No se sobrescriben datos inválidos ni se cambia el escenario de infraestructura. La gestión de usuarios informa cuando los cambios son temporales. Si sessionStorage falla, el ingreso y el cierre siguen funcionando; será necesario volver a ingresar tras recargar.
 
 El dominio institucional requiere un registro DNS público correcto y un certificado válido antes de habilitar Enforce HTTPS en GitHub Pages.
+
+
+## Descargar la presentación ejecutiva en PDF
+
+En **Presentación ejecutiva → Descargar presentación en PDF** se genera un documento horizontal de 14 páginas: introducción, cuatro pilares y los doce capítulos del recorrido. El mismo botón está disponible dentro de la presentación como **PDF**. Incluye el logo institucional y texto vectorial legible.
+
+Las cifras de hardware, licenciamiento y VM se calculan con el escenario abierto al pulsar descargar. El modelo de contenido es compartido con la pantalla. El archivo se llama `CGA-Hefesto-Digital-Twin-360-Presentacion.pdf`; no incluye cuentas ni contraseñas y no modifica los equipos reales. Las animaciones se representan mediante gráficos estáticos.
+
+El PDF se genera en el navegador con una biblioteca empaquetada con la aplicación; no se envía el escenario a un servicio externo. El logo se carga desde el propio sitio. Las pruebas comprueban contenido, cifras actuales y límites de texto; `scripts/verify-presentation-pdf.ts` permite generar una referencia para revisión visual en la nube.
